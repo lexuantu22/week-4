@@ -58,38 +58,45 @@ router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   // Simple validatetion
-  if (!username || !password)
-    return res
-      .status(400)
-      .json({ state: false, message: "Missing username or password" });
-
-  try {
-    // Check for existing account
-    const account = await UserModel.findOne({ username });
-    if (!account)
-      return res
-        .status(400)
-        .json({ state: false, message: "Incorrect username and password." });
-
-    // Check password
-    if (!password)
-      returnres
-        .status(400)
-        .json({ state: false, message: "Incorrect username and password." });
-
-    if (username)
-      // res.json({
-      //   state: true,
-      //   message: "Logined successfully",
-      //   account,
-      // });
-      console.log(account);
-    res.render("home", { title: "Shopee" });
-  } catch (err) {
-    console.log(error);
-    res.status(500).json({ state: false, message: "Server error" });
+  if (!username || !password){
+    // return res.render("login",{errTitle:"Lỗi Đăng nhập"});
+    return res.render("login",{errTitle:"Lỗi Đăng nhập"});
   }
+  
+  
+    // return res
+    //   .status(400)
+    //   .json({ state: false, message: "Missing username or password" });
+
+  // try {
+  //   // Check for existing account
+  //   const account = await UserModel.findOne({ username });
+  //   if (!account)
+  //     return res
+  //       .status(400)
+  //       .json({ state: false, message: "Incorrect username and password." });
+
+  //   // Check password
+  //   if (!password)
+  //     returnres
+  //       .status(400)
+  //       .json({ state: false, message: "Incorrect username and password." });
+
+  //   if (username)
+  //     // res.json({
+  //     //   state: true,
+  //     //   message: "Logined successfully",
+  //     //   account,
+  //     // });
+  //     console.log(account);
+  //   res.render("home", { title: "Shopee" });
+  // } catch (err) {
+  //   console.log(err);
+  //   res.status(500).json({ state: false, message: "Server error" });
+  // }
 });
+
+
 
 // Export router
 module.exports = router;
