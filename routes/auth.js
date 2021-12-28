@@ -41,7 +41,7 @@ router.post("/register", async function (req, res, next) {
     // });
     console.log("Create account successfully");
     console.log(newAccount);
-    res.render("login", { title: "Shopee" });
+    res.render("login", { title: "Shopee",errTitle:""});
   } catch (error) {
     console.log(error);
     res.status(500).json({ state: false, message: "Server error" });
@@ -49,52 +49,50 @@ router.post("/register", async function (req, res, next) {
 });
 
 router.get("/login", function (req, res, next) {
-  res.render("login", { title: "Login page" });
+  res.render("login", { title: "Login page" , errTitle:""});
 });
+
+
 
 // Login function
 // Route POST api/auth/login
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
+  console.log(password)
+  const user = await UserModel.findOne({username: username})
+  // console.log(user.password);
+ 
+  // Simple validation
+  if (!username || !password)
+  return res.render("login",{errTitle:"Không được bỏ trống Username hoặc Password !"});
+  
 
-  // Simple validatetion
-  if (!username || !password){
-    // return res.render("login",{errTitle:"Lỗi Đăng nhập"});
-    return res.render("login",{errTitle:"Lỗi Đăng nhập"});
+  try {
+    // Check for existing account
+    // const account = await UserModel.findOne({ username });
+    if (!(username == user.username ))
+    // console.log(user.username);
+    return res.render("login",{errTitle:"Username không đúng!"});
+      // return res
+      //   .status(400)
+      //   .json({ state: false, message: "Incorrect username and password." });
+
+    // Check password
+    if (!(password == user.password))
+    return res.render("login",{errTitle:"Password không đúng!"});
+      // returnres
+      //   .status(400)
+      //   .json({ state: false, message: "Incorrect username and password." });
+
+    if (username== user.username && password== user.password)
+     
+    res.render("home", { title: "Shopee" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ state: false, message: "Server error" });
   }
-  
-  
-    // return res
-    //   .status(400)
-    //   .json({ state: false, message: "Missing username or password" });
-
-  // try {
-  //   // Check for existing account
-  //   const account = await UserModel.findOne({ username });
-  //   if (!account)
-  //     return res
-  //       .status(400)
-  //       .json({ state: false, message: "Incorrect username and password." });
-
-  //   // Check password
-  //   if (!password)
-  //     returnres
-  //       .status(400)
-  //       .json({ state: false, message: "Incorrect username and password." });
-
-  //   if (username)
-  //     // res.json({
-  //     //   state: true,
-  //     //   message: "Logined successfully",
-  //     //   account,
-  //     // });
-  //     console.log(account);
-  //   res.render("home", { title: "Shopee" });
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(500).json({ state: false, message: "Server error" });
-  // }
 });
+
 
 
 
